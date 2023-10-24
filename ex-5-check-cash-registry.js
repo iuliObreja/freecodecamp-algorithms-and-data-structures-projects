@@ -32,40 +32,7 @@ function checkCashRegister(price, cash, cid) {
     compartmentsChecked++;
     sumAllCompartments = +sumAllCompartments.toFixed(2) + +compartment[1].toFixed(2);
     
-    while (compartment[1] > changeDiff) {
-      switch (compartment[0]) {
-        case 'ONE HUNDRED':
-          compartment[1] -= 100;
-          break;
-        case 'TWENTY':
-          compartment[1] -= 20;
-          break;
-        case 'TEN':
-          compartment[1] -= 10;
-          break;
-        case 'FIVE':
-          compartment[1] -= 5;
-          break;
-        case 'ONE':
-          compartment[1] -= 1;
-          break;
-        case 'QUARTER':
-          compartment[1] -= 0.25;
-          break;
-        case 'DIME':
-          compartment[1] -= 0.1;
-          compartment[1] = +compartment[1].toFixed(2);
-          break;
-        case 'NICKEL':
-          compartment[1] -= 0.05;
-          compartment[1] = +compartment[1].toFixed(2);
-          break;
-        case 'PENNY':
-          compartment[1] -= 0.01;
-          compartment[1] = +compartment[1].toFixed(2);
-          break;
-      }
-    }
+    valueSubstractor(compartment, changeDiff);
     
     if (compartment[1] < changeDiff && compartment[1] !== 0) {
       flexChange += compartment[1];
@@ -81,7 +48,7 @@ function checkCashRegister(price, cash, cid) {
       break;
     }
   }
-
+  
   if (compartmentsChecked === 9 && sumAllCompartments === changeDue) {
     status = 'CLOSED';
     change = cid.reverse();
@@ -93,44 +60,80 @@ function checkCashRegister(price, cash, cid) {
   };
 };
 
-console.log(checkCashRegister(2.75, 10, 
-  [
-    ["PENNY", 1.01], 
-    ["NICKEL", 2.05], 
-    ["DIME", 3.1], 
-    ["QUARTER", 4.25], 
-    ["ONE", 90], 
-    ["FIVE", 55], 
-    ["TEN", 20], 
-    ["TWENTY", 60], 
-    ["ONE HUNDRED", 100]
-  ])
-);
+const cashRegister1 = [
+  ["PENNY", 1.01], 
+  ["NICKEL", 2.05], 
+  ["DIME", 3.1], 
+  ["QUARTER", 4.25], 
+  ["ONE", 90], 
+  ["FIVE", 55], 
+  ["TEN", 20], 
+  ["TWENTY", 60], 
+  ["ONE HUNDRED", 100]
+];
 
-console.log(checkCashRegister(2.77, 3, 
-  [
-    ["PENNY", 0.23], 
-    ["NICKEL", 0], 
-    ["DIME", 0], 
-    ["QUARTER", 0], 
-    ["ONE", 0], 
-    ["FIVE", 0], 
-    ["TEN", 0], 
-    ["TWENTY", 0], 
-    ["ONE HUNDRED", 0]
-  ])
-);
+const cashRegister2 = [
+  ["PENNY", 0.23], 
+  ["NICKEL", 0], 
+  ["DIME", 0], 
+  ["QUARTER", 0], 
+  ["ONE", 0], 
+  ["FIVE", 0], 
+  ["TEN", 0], 
+  ["TWENTY", 0], 
+  ["ONE HUNDRED", 0]
+];
 
-console.log(checkCashRegister(2.75, 10, 
-  [
-    ["PENNY", 0], 
-    ["NICKEL", 0], 
-    ["DIME", 3.1], 
-    ["QUARTER", 0], 
-    ["ONE", 0], 
-    ["FIVE", 0], 
-    ["TEN", 0], 
-    ["TWENTY", 60], 
-    ["ONE HUNDRED", 100]
-  ])
-);
+const cashRegister3 = [
+  ["PENNY", 0], 
+  ["NICKEL", 0], 
+  ["DIME", 3.1], 
+  ["QUARTER", 0], 
+  ["ONE", 0], 
+  ["FIVE", 0], 
+  ["TEN", 0], 
+  ["TWENTY", 60], 
+  ["ONE HUNDRED", 100]
+]; 
+
+console.log(checkCashRegister(2.75, 10, cashRegister1));
+console.log(checkCashRegister(2.77, 3, cashRegister2));
+console.log(checkCashRegister(2.75, 10, cashRegister3));
+
+// helper function:
+function valueSubstractor(compartment, change) {
+  while (compartment[1] > change) {
+    switch (compartment[0]) {
+      case 'ONE HUNDRED':
+        compartment[1] -= 100;
+        break;
+      case 'TWENTY':
+        compartment[1] -= 20;
+        break;
+      case 'TEN':
+        compartment[1] -= 10;
+        break;
+      case 'FIVE':
+        compartment[1] -= 5;
+        break;
+      case 'ONE':
+        compartment[1] -= 1;
+        break;
+      case 'QUARTER':
+        compartment[1] -= 0.25;
+        break;
+      case 'DIME':
+        compartment[1] -= 0.1;
+        compartment[1] = +compartment[1].toFixed(2);
+        break;
+      case 'NICKEL':
+        compartment[1] -= 0.05;
+        compartment[1] = +compartment[1].toFixed(2);
+        break;
+      case 'PENNY':
+        compartment[1] -= 0.01;
+        compartment[1] = +compartment[1].toFixed(2);
+        break;
+    }
+  }
+};

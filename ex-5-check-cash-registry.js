@@ -1,6 +1,6 @@
 /*
-  Design a cash register drawer function checkCashRegister() that accepts purchase price 
-  as the first argument (price), payment as the second argument (cash), and cash-in-drawer 
+  Design a cash register compartment function checkCashRegister() that accepts purchase price 
+  as the first argument (price), payment as the second argument (cash), and cash-in-compartment 
   (cid) as the third argument.
 
   'cid' is a 2D array listing available currency.
@@ -8,10 +8,10 @@
   The checkCashRegister() function should always return an object with a status key 
   and a change key.
 
-  Return {status: "INSUFFICIENT_FUNDS", change: []} if cash-in-drawer is less than the 
+  Return {status: "INSUFFICIENT_FUNDS", change: []} if cash-in-compartment is less than the 
   change due, or if you cannot return the exact change.
 
-  Return {status: "CLOSED", change: [...]} with cash-in-drawer as the value for the 
+  Return {status: "CLOSED", change: [...]} with cash-in-compartment as the value for the 
   key change if it is equal to the change due.
 
   Otherwise, return {status: "OPEN", change: [...]}, with the change due in coins and bills, 
@@ -23,66 +23,66 @@ function checkCashRegister(price, cash, cid) {
   let change = [];
   const changeDue = +(cash - price).toFixed(2);
   
-  let drawersChecked = 0;
+  let compartmentsChecked = 0;
   let flexChange = 0;
-  let sumAllDrawers = 0;
+  let sumAllCompartments = 0;
   
-  for (let drawer of cid.reverse()) {
+  for (let compartment of cid.reverse()) {
     let changeDiff = +(changeDue - flexChange).toFixed(2);
-    drawersChecked++;
-    sumAllDrawers = +sumAllDrawers.toFixed(2) + +drawer[1].toFixed(2);
+    compartmentsChecked++;
+    sumAllCompartments = +sumAllCompartments.toFixed(2) + +compartment[1].toFixed(2);
     
-    while (drawer[1] > changeDiff) {
-      switch (drawer[0]) {
+    while (compartment[1] > changeDiff) {
+      switch (compartment[0]) {
         case 'ONE HUNDRED':
-          drawer[1] -= 100;
+          compartment[1] -= 100;
           break;
         case 'TWENTY':
-          drawer[1] -= 20;
+          compartment[1] -= 20;
           break;
         case 'TEN':
-          drawer[1] -= 10;
+          compartment[1] -= 10;
           break;
         case 'FIVE':
-          drawer[1] -= 5;
+          compartment[1] -= 5;
           break;
         case 'ONE':
-          drawer[1] -= 1;
+          compartment[1] -= 1;
           break;
         case 'QUARTER':
-          drawer[1] -= 0.25;
+          compartment[1] -= 0.25;
           break;
         case 'DIME':
-          drawer[1] -= 0.1;
-          drawer[1] = +drawer[1].toFixed(2);
+          compartment[1] -= 0.1;
+          compartment[1] = +compartment[1].toFixed(2);
           break;
         case 'NICKEL':
-          drawer[1] -= 0.05;
-          drawer[1] = +drawer[1].toFixed(2);
+          compartment[1] -= 0.05;
+          compartment[1] = +compartment[1].toFixed(2);
           break;
         case 'PENNY':
-          drawer[1] -= 0.01;
-          drawer[1] = +drawer[1].toFixed(2);
+          compartment[1] -= 0.01;
+          compartment[1] = +compartment[1].toFixed(2);
           break;
       }
     }
     
-    if (drawer[1] < changeDiff && drawer[1] !== 0) {
-      flexChange += drawer[1];
-      change.push(drawer);
-    } else if (drawer[1] === changeDiff) {
-      change.push(drawer);
+    if (compartment[1] < changeDiff && compartment[1] !== 0) {
+      flexChange += compartment[1];
+      change.push(compartment);
+    } else if (compartment[1] === changeDiff) {
+      change.push(compartment);
       break;
     }
     
-    if (drawersChecked === 9 && drawer[1] !== changeDiff) {
+    if (compartmentsChecked === 9 && compartment[1] !== changeDiff) {
       status = 'INSUFFICIENT_FUNDS';
       change = [];
       break;
     }
   }
 
-  if (drawersChecked === 9 && sumAllDrawers === changeDue) {
+  if (compartmentsChecked === 9 && sumAllCompartments === changeDue) {
     status = 'CLOSED';
     change = cid.reverse();
   }
